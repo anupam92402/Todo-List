@@ -36,4 +36,18 @@ class AddEditNoteActivity : AppCompatActivity() {
         }
 
     }
+
+    private val timeInterval = 2000
+    private var backPressed:Long =0
+
+    override fun onBackPressed() {
+        if(backPressed+timeInterval>System.currentTimeMillis()) {
+            startActivity(Intent(this,MainActivity::class.java))
+            return
+        }else{
+            Toast.makeText(this,"Tap again to Exit",Toast.LENGTH_SHORT).show()
+            backPressed = System.currentTimeMillis()
+        }
+    }
+
 }
