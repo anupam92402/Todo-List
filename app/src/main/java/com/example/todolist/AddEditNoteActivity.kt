@@ -30,7 +30,7 @@ class AddEditNoteActivity : AppCompatActivity() {
             val noteCategory =ETCategory.text.toString()
 
             viewModal.addNote(NotesModal(noteTitle,noteDescription,noteDate,noteTime,noteCategory))
-            Toast.makeText(this,"notes created",Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "$noteTitle successfully added to list",Toast.LENGTH_LONG).show()
             startActivity(Intent(applicationContext,MainActivity::class.java))
             this.finish()
         }
