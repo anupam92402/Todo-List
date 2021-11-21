@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity(), NoteClickedInterface {
         //using observer
         viewModal.allNotes.observe(this, Observer { list ->
             list?.let {
-                if(noteRVAdapter.allNotes.isEmpty()){
+                if(it.isEmpty()){
                     idIVNote.visibility = View.VISIBLE
                     idTVNoteMessage.visibility=View.VISIBLE
                 }else{
@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity(), NoteClickedInterface {
                     ItemTouchHelper.LEFT -> {
                         val item = noteRVAdapter.deleteFromList(position)
                         viewModal.deleteNote(item)
-                        Snackbar.make(idRVNotes,"${item.noteTitle} Deleted",Snackbar.LENGTH_SHORT)
+                        Snackbar.make(idRVNotes,"${item.noteTitle} Task Deleted",Snackbar.LENGTH_SHORT)
                             .setAction("Undo",View.OnClickListener {
                                viewModal.addNote(item)
                                 Toast.makeText(this@MainActivity,"Reinserted Successfully",
@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity(), NoteClickedInterface {
                     ItemTouchHelper.RIGHT -> {
                         val item = noteRVAdapter.deleteFromList(position)
                         viewModal.deleteNote(item)
-                        Snackbar.make(idRVNotes,"${item.noteTitle} Completed",Snackbar.LENGTH_SHORT)
+                        Snackbar.make(idRVNotes,"${item.noteTitle} Task Completed",Snackbar.LENGTH_SHORT)
                             .setAction("Undo",View.OnClickListener {
                                 viewModal.addNote(item)
                                 Toast.makeText(this@MainActivity,"Reinserted Successfully",
