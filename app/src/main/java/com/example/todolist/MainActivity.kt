@@ -1,10 +1,17 @@
 package com.example.todolist
 
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
+import android.view.Window
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -52,6 +59,7 @@ class MainActivity : AppCompatActivity(), NoteClickedInterface {
         //send to create new notes activity
         idFABAddNote.setOnClickListener {
             val intent = Intent(this, AddEditNoteActivity::class.java)
+            intent.putExtra("type","Create")
             startActivity(intent)
             this.finish()
         }
@@ -67,7 +75,7 @@ class MainActivity : AppCompatActivity(), NoteClickedInterface {
                         Snackbar.make(idRVNotes,"${item.noteTitle} Task Deleted",Snackbar.LENGTH_SHORT)
                             .setAction("Undo",View.OnClickListener {
                                viewModal.addNote(item)
-                                Toast.makeText(this@MainActivity,"Reinserted Successfully",
+                                Toast.makeText(this@MainActivity,"Reinserted ${item.noteTitle} Successfully",
                                     Toast.LENGTH_SHORT).show()
                             }) .show()
 
@@ -78,7 +86,7 @@ class MainActivity : AppCompatActivity(), NoteClickedInterface {
                         Snackbar.make(idRVNotes,"${item.noteTitle} Task Completed",Snackbar.LENGTH_SHORT)
                             .setAction("Undo",View.OnClickListener {
                                 viewModal.addNote(item)
-                                Toast.makeText(this@MainActivity,"Reinserted Successfully",
+                                Toast.makeText(this@MainActivity,"Reinserted ${item.noteTitle} Successfully",
                                     Toast.LENGTH_SHORT).show()
                             }) .show()
 
@@ -94,7 +102,51 @@ class MainActivity : AppCompatActivity(), NoteClickedInterface {
     }
 
     override fun onMoreIconClick(note: NotesModal) {
-        Toast.makeText(this, "More Options Clicked", Toast.LENGTH_LONG).show()
+        showDialog(note)
+    }
+
+    private fun showDialog(note: NotesModal) {
+        val dialog:Dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.more_bottom_sheet)
+
+        val viewLinearLayout = dialog.findViewById<LinearLayout>(R.id.viewLinearLayout)
+        val editLinearLayout = dialog.findViewById<LinearLayout>(R.id.editLinearLayout)
+        val shareLinearLayout = dialog.findViewById<LinearLayout>(R.id.shareLinearLayout)
+
+        viewLinearLayout.setOnClickListener {
+           val intent = Intent(this,viewNoteOnlyActivity::class.java)
+            startActivity(intent)
+        }
+        editLinearLayout.setOnClickListener {
+            val intent = Intent(this, AddEditNoteActivity::class.java)
+            intent.putExtra("type","Edit")
+            intent.putExtra("title",note.noteTitle)
+            intent.putExtra("description",note.noteDescription)
+            intent.putExtra("date",note.noteDate)
+            intent.putExtra("time",note.noteTime)
+            intent.putExtra("category",note.noteCategory)
+            intent.putExtra("noteId",note.id)
+            startActivity(intent)
+            this.finish()
+        }
+        shareLinearLayout.setOnClickListener {
+            val sendIntent: Intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, note.noteTitle+"\n"+note.noteDescription)
+                type = "text/plain"
+            }
+
+            val shareIntent = Intent.createChooser(sendIntent, null)
+            startActivity(shareIntent)
+
+        }
+
+        dialog.show()
+        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+        dialog.window?.setGravity(Gravity.BOTTOM)
     }
 }
 

@@ -22,30 +22,65 @@ class AddEditNoteActivity : AppCompatActivity() {
             ViewModelProvider.AndroidViewModelFactory.getInstance(application)
         ).get(NoteViewModal::class.java)
 
-        btnSave.setOnClickListener {
-            val noteTitle =ETTilte.text.toString()
-            val noteDescription =ETDescription.text.toString()
-            val noteDate =ETDate.text.toString()
-            val noteTime =ETTime.text.toString()
-            val noteCategory =ETCategory.text.toString()
+        val noteType = intent.getStringExtra("type")
+        if (noteType.equals("Edit")) {
+            btnSave.text = "Update Todo"
+            ETTitle.setText(intent.getStringExtra("title"))
+            ETDescription.setText(intent.getStringExtra("description"))
+            ETDate.setText(intent.getStringExtra("date"))
+            ETTime.setText(intent.getStringExtra("time"))
+            ETCategory.setText(intent.getStringExtra("category"))
+            noteId = intent.getIntExtra("noteId", -1)
+        } else {
+            btnSave.text = "Create Todo"
+        }
 
-            viewModal.addNote(NotesModal(noteTitle,noteDescription,noteDate,noteTime,noteCategory))
-            Toast.makeText(this, "$noteTitle successfully added to list",Toast.LENGTH_LONG).show()
-            startActivity(Intent(applicationContext,MainActivity::class.java))
+        btnSave.setOnClickListener {
+            val noteTitle = ETTitle.text.toString()
+            val noteDescription = ETDescription.text.toString()
+            val noteDate = ETDate.text.toString()
+            val noteTime = ETTime.text.toString()
+            val noteCategory = ETCategory.text.toString()
+            if (noteType.equals("Edit")) {
+                val updateNote = NotesModal(
+                    noteTitle,
+                    noteDescription,
+                    noteDate,
+                    noteTime,
+                    noteCategory
+                )
+                updateNote.id = noteId
+                viewModal.updateNote(updateNote)
+                Toast.makeText(this, "$noteTitle Updated", Toast.LENGTH_SHORT).show()
+            } else {
+                viewModal.addNote(
+                    NotesModal(
+                        noteTitle,
+                        noteDescription,
+                        noteDate,
+                        noteTime,
+                        noteCategory
+                    )
+                )
+                Toast.makeText(this, "$noteTitle successfully added to the list", Toast.LENGTH_LONG)
+                    .show()
+            }
+
+            startActivity(Intent(applicationContext, MainActivity::class.java))
             this.finish()
         }
 
     }
 
     private val timeInterval = 2000
-    private var backPressed:Long =0
+    private var backPressed: Long = 0
 
     override fun onBackPressed() {
-        if(backPressed+timeInterval>System.currentTimeMillis()) {
-            startActivity(Intent(this,MainActivity::class.java))
+        if (backPressed + timeInterval > System.currentTimeMillis()) {
+            startActivity(Intent(this, MainActivity::class.java))
             return
-        }else{
-            Toast.makeText(this,"Tap again to Exit",Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this, "Press again to go Back", Toast.LENGTH_SHORT).show()
             backPressed = System.currentTimeMillis()
         }
     }
