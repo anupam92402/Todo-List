@@ -56,6 +56,16 @@ class MainActivity : AppCompatActivity(), NoteClickedInterface {
             }
         })
 
+        //swipe to refresh
+        swipeToRefresh.setOnRefreshListener {
+            viewModal.allNotes.observe(this, Observer { list ->
+                list?.let {
+                    noteRVAdapter.updateList(it)
+                }
+            })
+            swipeToRefresh.isRefreshing = false
+        }
+
         //send to create new notes activity
         idFABAddNote.setOnClickListener {
             val intent = Intent(this, AddEditNoteActivity::class.java)
