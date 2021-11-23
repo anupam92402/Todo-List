@@ -15,7 +15,7 @@
             android:id="@+id/idRVNotes"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             tools:listitem="@layout/note_rv_item" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

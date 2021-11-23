@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +22,7 @@ import com.example.todolist.adapter.NoteRVAdapter
 import com.example.todolist.modals.NotesModal
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 
 class MainActivity : AppCompatActivity(), NoteClickedInterface {
 
@@ -75,7 +75,9 @@ class MainActivity : AppCompatActivity(), NoteClickedInterface {
         }
 
         //setting up swipe gesture
-        val swipegesture = object : RVSwipeGestures(this) {
+        val swipeGesture = object : RVSwipeGestures(this) {
+
+
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position: Int = viewHolder.adapterPosition
                 when (direction) {
@@ -106,7 +108,7 @@ class MainActivity : AppCompatActivity(), NoteClickedInterface {
         }
 
         //attaching swipe gesture to recycler view
-        val itemTouchHelper = ItemTouchHelper(swipegesture)
+        val itemTouchHelper = ItemTouchHelper(swipeGesture)
         itemTouchHelper.attachToRecyclerView(idRVNotes)
 
     }

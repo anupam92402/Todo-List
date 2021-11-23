@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -27,13 +28,15 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_view"/>
+            android:src="@drawable/ic_view"
+            app:tint="@color/black" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="View"
             android:layout_marginLeft="30dp"
+            android:textColor="@color/black"
             android:textSize="16sp"
             />
 
@@ -49,6 +52,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:tint="@color/black"
             android:src="@drawable/ic_edit_note"/>
 
         <TextView
@@ -56,6 +60,7 @@
             android:layout_height="wrap_content"
             android:text="Edit"
             android:layout_marginLeft="30dp"
+            android:textColor="@color/black"
             android:textSize="16sp"
             />
 
@@ -71,6 +76,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:tint="@color/black"
             android:src="@drawable/ic_share"/>
 
         <TextView
@@ -78,6 +84,7 @@
             android:layout_height="wrap_content"
             android:text="Share"
             android:layout_marginLeft="30dp"
+            android:textColor="@color/black"
             android:textSize="16sp"
             />
 
