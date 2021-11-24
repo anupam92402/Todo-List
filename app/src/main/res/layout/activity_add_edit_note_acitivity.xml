@@ -116,22 +116,14 @@
         android:textColor="@color/orange"
         android:textSize="16sp" />
 
-    <EditText
-        android:id="@+id/ETCategory"
+    <Spinner
+        android:id="@+id/SpinnerCategory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Example Banking"
         android:layout_marginTop="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:inputType="textCapWords"
-        android:textSize="18sp"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:drawablePadding="8dp"
-        tools:ignore="TouchTargetSizeCheck" />
+        android:layout_marginBottom="16dp"/>
 
     <Button
         android:id="@+id/btnSave"

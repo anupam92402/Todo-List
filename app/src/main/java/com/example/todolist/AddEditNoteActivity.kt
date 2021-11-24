@@ -5,10 +5,7 @@ import android.app.TimePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.DatePicker
-import android.widget.TimePicker
-import android.widget.Toast
+import android.widget.*
 import androidx.lifecycle.ViewModelProvider
 import com.example.todolist.modals.NotesModal
 import kotlinx.android.synthetic.main.activity_add_edit_note_acitivity.*
@@ -17,15 +14,18 @@ import java.util.*
 
 class AddEditNoteActivity : AppCompatActivity() {
 
-    lateinit var viewModal: NoteViewModal
-    var noteId = -1
+    private lateinit var viewModal: NoteViewModal
+    private var noteId = -1
 
     lateinit var myCalendar: Calendar
     lateinit var dateSetListener: DatePickerDialog.OnDateSetListener
     lateinit var timeSetListener: TimePickerDialog.OnTimeSetListener
 
-    var finalDate = 0L
-    var finalTime = 0L
+    private var finalDate = 0L
+    private var finalTime = 0L
+
+    private var labels =
+        arrayListOf("Banking", "Business", "Insurance", "Personal", "Shopping", "Others")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +36,7 @@ class AddEditNoteActivity : AppCompatActivity() {
             ViewModelProvider.AndroidViewModelFactory.getInstance(application)
         ).get(NoteViewModal::class.java)
 
-        ETDate.setOnClickListener{
+        ETDate.setOnClickListener {
             setListener()
         }
 
@@ -44,6 +44,7 @@ class AddEditNoteActivity : AppCompatActivity() {
             setTimeListener()
         }
 
+        setSpinner()
 
         val noteType = intent.getStringExtra("type")
         if (noteType.equals("Edit")) {
@@ -52,7 +53,10 @@ class AddEditNoteActivity : AppCompatActivity() {
             ETDescription.setText(intent.getStringExtra("description"))
             ETDate.setText(intent.getStringExtra("date"))
             ETTime.setText(intent.getStringExtra("time"))
-            ETCategory.setText(intent.getStringExtra("category"))
+            var s = intent.getStringExtra("category")
+            if (s != null) {
+                setSelectedSpinnerItem(s)
+            }
             noteId = intent.getIntExtra("noteId", -1)
         } else {
             btnSave.text = "Create Todo"
@@ -63,7 +67,7 @@ class AddEditNoteActivity : AppCompatActivity() {
             val noteDescription = ETDescription.text.toString()
             val noteDate = ETDate.text.toString()
             val noteTime = ETTime.text.toString()
-            val noteCategory = ETCategory.text.toString()
+            val noteCategory = SpinnerCategory.selectedItem.toString()
             if (noteType.equals("Edit")) {
                 val updateNote = NotesModal(
                     noteTitle,
@@ -149,6 +153,13 @@ class AddEditNoteActivity : AppCompatActivity() {
         ETDate.setText(sdf.format(myCalendar.time))
     }
 
+    private fun setSpinner() {
+        val adapter =
+            ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, labels)
+
+        SpinnerCategory.adapter = adapter
+    }
+
     private val timeInterval = 2000
     private var backPressed: Long = 0
 
@@ -161,5 +172,29 @@ class AddEditNoteActivity : AppCompatActivity() {
             backPressed = System.currentTimeMillis()
         }
     }
+
+    private fun setSelectedSpinnerItem(word: String) {
+        when {
+            word.equals("Banking") -> {
+                SpinnerCategory.setSelection(0)
+            }
+            word.equals("Business") -> {
+                SpinnerCategory.setSelection(1)
+            }
+            word.equals("Insurance") -> {
+                SpinnerCategory.setSelection(2)
+            }
+            word.equals("Personal") -> {
+                SpinnerCategory.setSelection(3)
+            }
+            word.equals("Shopping") -> {
+                SpinnerCategory.setSelection(4)
+            }
+            word.equals("Others") -> {
+                SpinnerCategory.setSelection(5)
+            }
+        }
+    }
+
 
 }

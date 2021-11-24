@@ -184,7 +184,6 @@ class MainActivity : AppCompatActivity(), NoteClickedInterface,
         return true
     }
 
-
     override fun onQueryTextSubmit(query: String?): Boolean {
         if(query!=null){
             searchDatabase(query)
